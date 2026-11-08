@@ -36,7 +36,7 @@ button { color: inherit; cursor: pointer; }
 .age-gate-copy > p:not(.age-gate-label) { max-width: 28rem; color: #d8d0c1; font-size: 1.2rem; line-height: 1.4; margin: 1.75rem auto 2rem; }
 .age-gate-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.4rem; }
 .age-gate-actions .text-link { color: var(--champagne); margin: 0; }
-.age-gate-collage { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: url("assets/photos/age-gate/01.jpg") center / cover no-repeat; filter: saturate(.78) brightness(.78); }
+.age-gate-collage { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: url("assets/photos/age-gate/01.webp") center / cover no-repeat; filter: saturate(.78) brightness(.78); }
 .age-gate-collage::after { content: ""; position: absolute; inset: 0; background: var(--black); opacity: 0; pointer-events: none; transition: opacity 950ms var(--ease-in-out); }
 .age-gate-collage.is-fading::after { opacity: 1; }
 .section-black, .section-paper, .section-red { padding: 7.5rem clamp(1.25rem, 5vw, 6rem); position: relative; isolation: isolate; overflow: hidden; }

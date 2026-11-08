@@ -21,16 +21,17 @@ try {
 }
 
 const ageGateCollage = document.querySelector('.age-gate-collage');
-const ageGateSlides = Array.from({ length: 6 }, (_, index) => `assets/photos/age-gate/${String(index + 1).padStart(2, '0')}.jpg`);
+const ageGateSlides = Array.from({ length: 6 }, (_, index) => `assets/photos/age-gate/${String(index + 1).padStart(2, '0')}.webp`);
 const ageGateMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let ageGateIndex = 0;
 let ageGateRotation;
 let ageGateFadeTimeout;
 
-ageGateSlides.forEach((src) => {
+function preloadAgeGateSlide(index) {
   const image = new Image();
-  image.src = src;
-});
+  image.decoding = 'async';
+  image.src = ageGateSlides[index];
+}
 
 function stopAgeGateRotation() {
   window.clearInterval(ageGateRotation);
@@ -42,6 +43,7 @@ function stopAgeGateRotation() {
 function startAgeGateRotation() {
   if (ageGateRotation || ageGate.hidden || ageGateMotion.matches || ageGateSlides.length < 2) return;
 
+  preloadAgeGateSlide((ageGateIndex + 1) % ageGateSlides.length);
   ageGateRotation = window.setInterval(() => {
     const nextIndex = (ageGateIndex + 1) % ageGateSlides.length;
     ageGateCollage.classList.add('is-fading');
@@ -49,6 +51,7 @@ function startAgeGateRotation() {
       ageGateCollage.style.backgroundImage = `url("${ageGateSlides[nextIndex]}")`;
       ageGateIndex = nextIndex;
       ageGateCollage.classList.remove('is-fading');
+      preloadAgeGateSlide((ageGateIndex + 1) % ageGateSlides.length);
     }, 950);
   }, 6800);
 }
@@ -79,9 +82,28 @@ const slideshowPools = {
 
 const slideshowElements = document.querySelectorAll('[data-slideshow]');
 const slideshowState = new Map();
+const lifeSlideshowElements = [...document.querySelectorAll('[data-slideshow="life"]')];
+let lifeVisibleSlides = [];
+let lifeSlideshowVisible = false;
+let lifeSlideshowInitialized = false;
+
+function shuffledSlideIndexes(count) {
+  const indexes = Array.from({ length: count }, (_, index) => index);
+  for (let index = indexes.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [indexes[index], indexes[swapIndex]] = [indexes[swapIndex], indexes[index]];
+  }
+  return indexes;
+}
+
+function nextLifeLineup() {
+  const available = shuffledSlideIndexes(slideshowPools.life)
+    .filter((index) => !lifeVisibleSlides.includes(index));
+  return available.slice(0, lifeSlideshowElements.length);
+}
 
 function slidePath(pool, index) {
-  return `assets/photos/${pool}/${String(index + 1).padStart(2, '0')}.jpg`;
+  return `assets/photos/${pool}/${String(index + 1).padStart(2, '0')}.webp`;
 }
 
 function setSlide(element, pool, index) {
@@ -107,18 +129,57 @@ function setSlide(element, pool, index) {
 slideshowElements.forEach((element) => {
   const pool = element.dataset.slideshow;
   const offset = Number(element.dataset.slideOffset || 0);
-  slideshowState.set(element, offset);
+  const initialIndex = pool === 'life' ? undefined : offset;
 
-  if (element.matches('img')) {
-    element.src = slidePath(pool, offset);
-  } else {
-    element.style.backgroundImage = `url("${slidePath(pool, offset)}")`;
+  if (initialIndex !== undefined) {
+    slideshowState.set(element, initialIndex);
+    if (element.matches('img')) {
+      element.src = slidePath(pool, initialIndex);
+    } else {
+      element.style.backgroundImage = `url("${slidePath(pool, initialIndex)}")`;
+    }
   }
 });
 
+function initializeLifeSlideshow() {
+  if (lifeSlideshowInitialized) return;
+  lifeSlideshowInitialized = true;
+  lifeVisibleSlides = shuffledSlideIndexes(slideshowPools.life).slice(0, lifeSlideshowElements.length);
+  lifeSlideshowElements.forEach((element, index) => {
+    const slideIndex = lifeVisibleSlides[index];
+    slideshowState.set(element, slideIndex);
+    element.style.backgroundImage = `url("${slidePath('life', slideIndex)}")`;
+  });
+}
+
+const lifeSection = document.querySelector('.lifestyle');
+if ('IntersectionObserver' in window && lifeSection) {
+  const lifeObserver = new IntersectionObserver(([entry]) => {
+    lifeSlideshowVisible = entry.isIntersecting;
+    if (lifeSlideshowVisible) initializeLifeSlideshow();
+  }, { rootMargin: '240px 0px' });
+  lifeObserver.observe(lifeSection);
+} else {
+  lifeSlideshowVisible = true;
+  initializeLifeSlideshow();
+}
+
 window.setInterval(() => {
+  if (lifeSlideshowVisible) {
+    if (!lifeSlideshowInitialized) initializeLifeSlideshow();
+    else {
+      lifeVisibleSlides = nextLifeLineup();
+      lifeSlideshowElements.forEach((element, index) => {
+        const nextIndex = lifeVisibleSlides[index];
+        slideshowState.set(element, nextIndex);
+        setSlide(element, 'life', nextIndex);
+      });
+    }
+  }
+
   slideshowElements.forEach((element) => {
     const pool = element.dataset.slideshow;
+    if (pool === 'life') return;
     const nextIndex = (slideshowState.get(element) + 1) % slideshowPools[pool];
     slideshowState.set(element, nextIndex);
     setSlide(element, pool, nextIndex);
