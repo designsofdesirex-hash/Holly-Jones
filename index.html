@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-palette="noir">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#101010" />
+  <meta name="theme-color" content="#090909" />
+  <script>try{const p=localStorage.getItem("holly-jones-palette-original-v2");if(["noir","violet","tide","citrus","original"].includes(p))document.documentElement.dataset.palette=p}catch{}</script>
   <meta name="description" content="Holly Jones — your new obsession. 6'1 findom, wealth magnet, and the live link to Holly Jones's world." />
   <title>HOLLY JONES — Your New Obsession</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
@@ -12,6 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=28" />
+  <link rel="stylesheet" href="palette-themes.css?v=4" />
 </head>
 <body>
   <section class="age-gate" id="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
@@ -19,7 +21,7 @@
       <h1 id="age-gate-title">18+<br /><em>ONLY</em></h1>
       <p>This page is intended for adults. Please confirm you are at least 18 to continue.</p>
       <div class="age-gate-actions">
-        <button class="button button-red" id="age-enter" type="button">I AM 18 OR OLDER <span aria-hidden="true">↘</span></button>
+        <button class="button button-red" id="age-enter" type="button">I AM 18 OR OLDER <span class="age-gate-arrow" aria-hidden="true"></span></button>
         <a class="text-link" href="about:blank">LEAVE THIS PAGE</a>
       </div>
     </div>
@@ -29,6 +31,16 @@
     <header class="topbar">
       <a class="wordmark" href="#top" aria-label="Holly Jones home">HOLLY JONES</a>
       <div class="topbar-status"><span class="status-dot"></span> LIVE FROM X</div>
+      <details class="palette-picker">
+        <summary aria-label="Choose color palette"><svg class="palette-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M12 3.25a8.75 8.75 0 1 0 0 17.5h1.35a2.2 2.2 0 0 0 1.4-3.9 1.28 1.28 0 0 1 .8-2.28h.55A4.65 4.65 0 0 0 20.75 9.9c0-3.67-3.92-6.65-8.75-6.65Z"/><circle cx="7.5" cy="10" r=".8"/><circle cx="10.5" cy="7.25" r=".8"/><circle cx="14.25" cy="7.5" r=".8"/><circle cx="17" cy="10.25" r=".8"/></svg><span class="palette-chevron" aria-hidden="true"></span></summary>
+        <div class="palette-options" role="group" aria-label="Color palettes">
+          <button class="palette-option" type="button" data-palette-choice="original" aria-pressed="false"><span>Heritage</span><span class="palette-option-check" aria-hidden="true"></span></button>
+          <button class="palette-option" type="button" data-palette-choice="noir" aria-pressed="true"><span>Noir &amp; Gilt</span><span class="palette-option-check" aria-hidden="true"></span></button>
+          <button class="palette-option" type="button" data-palette-choice="violet" aria-pressed="false"><span>Velvet Violet</span><span class="palette-option-check" aria-hidden="true"></span></button>
+          <button class="palette-option" type="button" data-palette-choice="tide" aria-pressed="false"><span>Pacific Tide</span><span class="palette-option-check" aria-hidden="true"></span></button>
+          <button class="palette-option" type="button" data-palette-choice="citrus" aria-pressed="false"><span>Citrus Grove</span><span class="palette-option-check" aria-hidden="true"></span></button>
+        </div>
+      </details>
       <a class="topbar-link" href="https://x.com/GoddessHollyJ" target="_blank" rel="noreferrer">@GoddessHollyJ <span aria-hidden="true">↗</span></a>
     </header>
 

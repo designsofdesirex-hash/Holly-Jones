@@ -143,7 +143,7 @@ h2 { font-size: clamp(4rem, 9vw, 9.5rem); }
 .youtube-feature { display: grid; grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr); align-items: center; gap: clamp(2rem, 6vw, 6rem); border-top: 1px solid var(--line); }
 .youtube-feature-copy { max-width: 35rem; }
 .youtube-title { display: flex; flex-direction: column; gap: .12em; margin: 0 0 2rem; font-size: clamp(2.75rem, 4.5vw, 5rem); line-height: .88; letter-spacing: -.045em; }
-.youtube-title-channel { color: var(--foil-gold); font-size: .62em; letter-spacing: .08em; }
+.youtube-title-channel { color: var(--foil-gold); font-size: .72em; letter-spacing: .08em; }
 .youtube-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; max-width: 23rem; margin: 0 0 2rem; padding: 1rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .youtube-stats div { display: flex; flex-direction: column; gap: .25rem; }
 .youtube-stats strong { font: 400 clamp(1.4rem, 2.5vw, 2.1rem)/1 var(--serif); color: var(--foil-gold); }
@@ -180,7 +180,7 @@ h2 { font-size: clamp(4rem, 9vw, 9.5rem); }
 .footer-portrait { position: relative; aspect-ratio: 1320 / 1791; max-height: 360px; margin: 0; overflow: hidden; border: 1px solid var(--foil-gold); background: var(--black); transform: rotate(3deg); }
 .footer-portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: saturate(.82) contrast(1.06); }
 .footer-portrait img { object-fit: contain; background: var(--black); }
-.footer-links { border-top: 1px solid rgba(239,237,232,.5); border-bottom: 1px solid rgba(239,237,232,.5); display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem 2.5rem; padding: 1.1rem 0; font-size: .76rem; font-weight: 700; letter-spacing: .12em; }
+.footer-links { border-top: 1px solid rgba(239,237,232,.5); border-bottom: 1px solid rgba(239,237,232,.5); display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem 2.5rem; padding: 1.1rem 0; font-size: .85rem; font-weight: 700; letter-spacing: .12em; }
 .footer-links a { transition: color 180ms ease-out; }
 .footer-links a:hover { color: var(--foil-gold); }
 .footer-last { font: 600 clamp(1.4rem, 3vw, 2.5rem)/1 var(--serif); letter-spacing: -.04em; margin: 4rem 0 6rem; text-align: center; }
@@ -200,7 +200,8 @@ h2 { font-size: clamp(4rem, 9vw, 9.5rem); }
   .topbar-status { display: none; }
   .topbar-link { font-size: .7rem; }
   .hero { min-height: calc(100svh - 64px); display: flex; flex-direction: column; align-items: stretch; gap: 2.5rem; padding-top: 3rem; }
-  .hero-copy { order: 2; max-width: 23rem; margin: 0 auto; text-align: center; }
+  .hero-copy { order: 2; width: 100%; max-width: 23rem; margin: 0 auto; text-align: center; }
+  .hero h1 { font-size: clamp(2.8rem, 11.5vw, 5.2rem); }
   .hero-actions { justify-content: center; margin-top: 2rem; }
   .hero-actions .button { min-width: 160px; gap: .8rem; }
   h1 { width: 100%; max-width: 100%; font-size: clamp(3.2rem, 13.5vw, 6.25rem); }
@@ -256,4 +257,66 @@ h2 { font-size: clamp(4rem, 9vw, 9.5rem); }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
   .gallery-grid { transition-duration: 160ms !important; }
+}
+
+/* Black-led luxury palette: ink, porcelain, and restrained gold. */
+:root {
+  --black: #090909;
+  --ink: #171613;
+  --paper: #F8F6F0;
+  --red: #B09152;
+  --rosewood: #B09152;
+  --red-dark: #8B6C32;
+  --charcoal: #171613;
+  --gold: #B09152;
+  --foil-gold: #D8BD7C;
+  --champagne: #E6D6AD;
+  --blush: #F0EAD9;
+  --line: rgba(216, 189, 124, .36);
+  --line-dark: rgba(23, 22, 19, .25);
+}
+
+body, .topbar { background-color: var(--black); color: var(--paper); }
+.age-gate { background: var(--black); color: var(--paper); }
+.age-gate::before { background: linear-gradient(180deg, rgba(9,9,9,.58), rgba(9,9,9,.78)); }
+.age-gate-copy { background: rgba(9,9,9,.86); border-color: rgba(216,189,124,.42); }
+.age-gate-copy > p:not(.age-gate-label), .attention-note, .youtube-stats span { color: #D8D2C5; }
+.age-gate-collage::after { background: var(--black); }
+
+.section-black, .section-red, .hero, .attention, .tribute, .youtube-feature, .lifestyle, .footer {
+  background-color: var(--black);
+  color: var(--paper);
+}
+.section-paper, .social, .gallery { background-color: #F8F6F0; color: var(--ink); }
+.section-black::before, .section-red::before, .hero::before, .attention::before,
+.tribute::before, .youtube-feature::before, .lifestyle::before, .footer::before {
+  background: radial-gradient(ellipse at 78% 8%, rgba(176,145,82,.12), transparent 42%);
+}
+.section-paper::before, .social::before, .gallery::before {
+  background: radial-gradient(ellipse at 90% 10%, rgba(176,145,82,.09), transparent 44%);
+}
+.hero, .attention, .tribute, .youtube-feature, .lifestyle, .footer {
+  background-image: linear-gradient(135deg, #090909 0%, #14130F 55%, #0D0D0C 100%);
+}
+.social, .gallery { background-image: linear-gradient(135deg, #FBFAF6 0%, #F3F0E7 100%); }
+.section-black h2 em, .section-red h2 em, .attention h2 em, h1 em { color: var(--champagne); }
+.social h2 em, .gallery h2 em, .section-paper .text-link { color: #725A2A; }
+.section-black .section-label, .section-red .section-label, .age-gate-label,
+.tribute-kicker, .youtube-title-channel, .youtube-stats strong, .youtube-player-label { color: var(--foil-gold); }
+.button-red, .tribute-link { background-color: var(--gold); border-color: var(--gold); color: #090909; }
+.button-red:hover, .tribute-link:hover { background-color: var(--foil-gold); border-color: var(--foil-gold); color: #090909; }
+.button-outline { border-color: rgba(216,189,124,.72); }
+.hero-mark { border-color: rgba(216,189,124,.55); box-shadow: 1.2rem 1.2rem 0 rgba(176,145,82,.18); }
+.hero-mark::after { background: linear-gradient(155deg, rgba(9,9,9,.02), rgba(9,9,9,.42)); }
+.tribute-card { border-color: rgba(176,145,82,.55); }
+.tribute-general { border-color: var(--foil-gold); color: #725A2A; }
+.youtube-frame { border-color: rgba(216,189,124,.5); box-shadow: 1rem 1rem 0 rgba(176,145,82,.16); }
+.youtube-frame { background-color: #090909; }
+.footer-portrait { border-color: var(--foil-gold); background: var(--black); }
+.footer-links { border-color: rgba(216,189,124,.52); }
+.footer small { color: #D8D2C5; }
+.gallery-control:hover { color: #8B6C32; }
+
+@media (hover: hover) and (pointer: fine) {
+  .social-grid a:hover { background: rgba(176,145,82,.1); color: #725A2A; }
 }

@@ -23,6 +23,8 @@ try {
 const ageGateCollage = document.querySelector('.age-gate-collage');
 const ageGateSlides = Array.from({ length: 6 }, (_, index) => `assets/photos/age-gate/${String(index + 1).padStart(2, '0')}.webp`);
 const ageGateMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const ageGateRotationMs = 7000;
+const ageGateFadeMs = 950;
 let ageGateIndex = 0;
 let ageGateRotation;
 let ageGateFadeTimeout;
@@ -52,8 +54,8 @@ function startAgeGateRotation() {
       ageGateIndex = nextIndex;
       ageGateCollage.classList.remove('is-fading');
       preloadAgeGateSlide((ageGateIndex + 1) % ageGateSlides.length);
-    }, 950);
-  }, 6800);
+    }, ageGateFadeMs);
+  }, ageGateRotationMs - ageGateFadeMs);
 }
 
 if (ageGateCollage && ageGateSlides.length) {
@@ -184,7 +186,7 @@ window.setInterval(() => {
     slideshowState.set(element, nextIndex);
     setSlide(element, pool, nextIndex);
   });
-}, 6000);
+}, 7000);
 
 const galleryGrid = document.querySelector('.gallery-grid');
 const galleryItems = [...galleryGrid.querySelectorAll('.gallery-item')];
@@ -230,7 +232,7 @@ function galleryPageItems(page) {
 function scheduleGallery() {
   window.clearInterval(galleryTimer);
   if (!galleryPaused && !galleryHoverPaused && !galleryFocusPaused && !document.hidden) {
-    galleryTimer = window.setInterval(() => showGalleryPage(galleryPage + 1), 7600);
+    galleryTimer = window.setInterval(() => showGalleryPage(galleryPage + 1), 7000);
   }
   galleryPause.textContent = galleryPaused ? 'RESUME ROTATION' : 'PAUSE ROTATION';
   galleryPause.setAttribute('aria-pressed', String(galleryPaused));
@@ -291,3 +293,42 @@ galleryReducedMotion.addEventListener('change', (event) => {
   scheduleGallery();
 });
 scheduleGallery();
+
+const paletteChoices = Array.from(document.querySelectorAll('[data-palette-choice]'));
+const paletteNames = { noir: 'NOIR & GILT', violet: 'VELVET VIOLET', tide: 'PACIFIC TIDE', citrus: 'CITRUS GROVE', original: 'HERITAGE' };
+const paletteThemeColors = { noir: '#090909', violet: '#211936', tide: '#083D52', citrus: '#264E36', original: '#0B0908' };
+const palettePickers = Array.from(document.querySelectorAll('.palette-picker'));
+const paletteStorageKey = 'holly-jones-palette-original-v2';
+
+function applyPalette(name, persist = false) {
+  if (!Object.prototype.hasOwnProperty.call(paletteNames, name)) return;
+  document.documentElement.dataset.palette = name;
+  paletteChoices.forEach((choice) => {
+    choice.setAttribute('aria-pressed', String(choice.dataset.paletteChoice === name));
+  });
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', paletteThemeColors[name]);
+  if (persist) {
+    try { localStorage.setItem(paletteStorageKey, name); } catch { /* Palette still works for this page view. */ }
+  }
+}
+
+applyPalette(Object.prototype.hasOwnProperty.call(paletteNames, document.documentElement.dataset.palette) ? document.documentElement.dataset.palette : 'noir');
+paletteChoices.forEach((choice) => {
+  choice.addEventListener('click', () => {
+    applyPalette(choice.dataset.paletteChoice, true);
+    const picker = choice.closest('.palette-picker');
+    picker.open = false;
+    picker.querySelector('summary').focus();
+  });
+});
+palettePickers.forEach((picker) => picker.addEventListener('toggle', () => {
+  if (picker.open) palettePickers.forEach((other) => { if (other !== picker) other.open = false; });
+}));
+document.addEventListener('click', (event) => {
+  palettePickers.forEach((picker) => { if (picker.open && !picker.contains(event.target)) picker.open = false; });
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape') return;
+  const opened = palettePickers.find((picker) => picker.open);
+  if (opened) { opened.open = false; opened.querySelector('summary').focus(); }
+});
